@@ -29,7 +29,6 @@ if [[ $1 == "package" ]]; then
     # Cleanup
     echo Cleaning up...
     rm -rf _package
-    rm p2ghostrunner.tar.xz
 
     echo Done!
     exit 0

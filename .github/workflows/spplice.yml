@@ -1,6 +1,15 @@
 name: Spplice Package
 on: [push]
 
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+concurrency:
+    group: "pages"
+    cancel-in-progress: false
+
 jobs:
   package:
     runs-on: ubuntu-latest
@@ -28,3 +37,19 @@ jobs:
         with:
           name: Spplice Package (unzip first)
           path: p2ghostrunner.sppkg
+      # prepare website root
+      - name: Preparing website root
+        shell: bash
+        run: |
+          mkdir pages
+          mv p2ghostrunner.tar.xz pages/
+      # push website
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './pages'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
